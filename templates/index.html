@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certification Verification</title>
+</head>
+<body>
+    <h1>Certification Verification</h1>
+    <form id="searchForm">
+        <input type="text" id="certID" placeholder="Enter Certification ID" required>
+        <button type="submit">Verify</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const certID = document.getElementById('certID').value;
+            const response = await fetch(`/verify?certID=${encodeURIComponent(certID)}`);
+            const result = await response.json();
+            document.getElementById('result').innerText = result.message;
+        });
+    </script>
+</body>
+</html>
