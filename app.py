@@ -27,18 +27,14 @@ def home():
 @app.route('/verify', methods=['GET'])
 def verify():
     cert_id = request.args.get('certID')  # Get certification ID from query parameters
+    if not cert_id:
+        return jsonify({"error": "certID parameter is required"}), 400
+
     if cert_id in certifications:
         cert = certifications[cert_id]
-        return jsonify({
-            "success": True,
-            "data": {
-                "name": cert["name"],
-                "status": cert["status"],
-                "issue_date": cert["issue_date"],
-                "expiry_date": cert["expiry_date"]
-            }
-        })
-    return jsonify({"success": False, "message": "Certification not found"}), 404
+        return jsonify(cert), 200
+    else:
+        return jsonify({"error": "Certification ID not found"}), 404
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=9000, debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000, debug=True)
